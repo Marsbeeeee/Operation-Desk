@@ -246,6 +246,24 @@ function App() {
     showToast('启动命令已复制')
   }
 
+  const copySkillPrompt = async tool => {
+    if (!tool.skillName) {
+      showToast('这个入口没有配置 Skill')
+      return
+    }
+    const prompt = tool.skillPrompt || `$${tool.skillName}`
+    await navigator.clipboard?.writeText(prompt)
+    showToast(`已复制 ${tool.skillName} 调用指令`)
+  }
+
+  const handlePrimaryAction = tool => {
+    if (tool.skillName) {
+      copySkillPrompt(tool)
+      return
+    }
+    launchTool(tool)
+  }
+
   return (
     <div className="app-shell">
       <aside className="sidebar">
@@ -317,10 +335,10 @@ function App() {
             </div>
             <div className="quick-actions">
               {favoriteTools.map(tool => (
-                <button key={tool.id} onClick={() => launchTool(tool)}>
+                <button key={tool.id} onClick={() => handlePrimaryAction(tool)}>
                   <ToolIcon tool={tool} />
                   <span>{tool.name}</span>
-                  <Play size={15} />
+                  {tool.skillName ? <Copy size={15} /> : <Play size={15} />}
                 </button>
               ))}
             </div>
@@ -357,6 +375,12 @@ function App() {
                       <dt>命令</dt>
                       <dd>{tool.command || '仅打开目录或链接'}</dd>
                     </div>
+                    {tool.skillName && (
+                      <div>
+                        <dt>Skill</dt>
+                        <dd>${tool.skillName}</dd>
+                      </div>
+                    )}
                     <div>
                       <dt>最近</dt>
                       <dd>{timeLabel(status.lastRunAt)}</dd>
@@ -364,9 +388,9 @@ function App() {
                   </dl>
                   {status.message && <div className="message-line">{status.message}</div>}
                   <div className="card-actions">
-                    <button className="primary" disabled={launching === tool.id || (!tool.command && !tool.repoUrl)} onClick={() => launchTool(tool)}>
-                      {launching === tool.id ? <Loader2 className="spin" size={17} /> : apiReady ? <Play size={17} /> : <ArrowUpRight size={17} />}
-                      {apiReady ? '启动' : tool.repoUrl ? 'GitHub' : '复制命令'}
+                    <button className="primary" disabled={launching === tool.id || (!tool.skillName && !tool.command && !tool.repoUrl)} onClick={() => handlePrimaryAction(tool)}>
+                      {launching === tool.id ? <Loader2 className="spin" size={17} /> : tool.skillName ? <Copy size={17} /> : apiReady ? <Play size={17} /> : <ArrowUpRight size={17} />}
+                      {tool.skillName ? '复制 Skill' : apiReady ? '启动' : tool.repoUrl ? 'GitHub' : '复制命令'}
                     </button>
                     {!apiReady && tool.command && (
                       <button className="secondary" onClick={() => copyCommand(tool)}>

@@ -9,6 +9,7 @@
 - 搜索工具名称、描述、目录和启动命令
 - 一键启动已配置的本地命令
 - 一键打开工具对应的工作目录
+- Skill 类入口可一键复制 Codex 调用指令
 - 对 Web 服务入口，点击“访问”会先启动服务并等待 URL 可访问，再打开浏览器
 - 本机服务不可用时，自动退化为 GitHub 仓库入口或复制启动命令
 - 展示本次会话内的启动状态和最近启动时间
@@ -16,7 +17,7 @@
 
 ## 核心入口
 
-- **Badcase Detect Agent**：Streamlit badcase 检查与 prompt 修复工作台
+- **Badcase Detect Agent**：通过 Codex Skill 做 prompt compliance badcase 分析与修复实验
 - **Data Viewer**：评估数据与 benchmark 查看入口
 - **Eval LLM Wiki**：LLM 评测复盘 Markdown 知识库
 - **Eval SOP Skill**：评估标注 SOP skill 本地目录
@@ -56,6 +57,8 @@ http://127.0.0.1:4317
 如果只打开静态页面，或者以后部署到 GitHub Pages，页面仍然可用，但会进入浏览模式：能打开已配置的 GitHub 仓库，或者复制启动命令到本机终端执行。
 
 Web 服务类入口建议直接点“访问”。操作台会自动发起启动，等待服务地址可访问后再打开浏览器；如果等待超时，请看弹出的 PowerShell 窗口里的报错。
+
+Skill 类入口建议点“复制 Skill”，然后把复制出的调用指令粘到 Codex 对话里继续使用。
 
 ## 常用开发命令
 
@@ -99,6 +102,8 @@ npm.cmd run start
   "command": "npm.cmd run dev",
   "url": "http://localhost:5173",
   "repoUrl": "https://github.com/Marsbeeeee/my-tool",
+  "skillName": "my-skill",
+  "skillPrompt": "$my-skill 处理这个任务",
   "favorite": true,
   "icon": "terminal"
 }
@@ -114,6 +119,8 @@ npm.cmd run start
 - `command`：点击“启动”时执行的 PowerShell 命令
 - `url`：可选，配置后会显示“访问”按钮
 - `repoUrl`：可选，本机服务不可用时打开的 GitHub 仓库地址
+- `skillName`：可选，Codex Skill 名称；配置后主按钮会变成“复制 Skill”
+- `skillPrompt`：可选，复制到剪贴板的默认 Skill 调用指令
 - `favorite`：是否显示在常用启动区
 - `icon`：图标类型，可用值包括 `bot`、`database`、`code`、`file`、`gauge`、`terminal`、`wrench`、`activity`
 
