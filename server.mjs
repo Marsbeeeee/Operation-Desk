@@ -57,17 +57,11 @@ function escapePowerShellString(value) {
   return String(value).replaceAll("'", "''")
 }
 
-function escapeCmdTitle(value) {
-  return String(value).replaceAll('"', "'")
-}
-
-function runVisiblePowerShell(command, cwd, title) {
+function runVisiblePowerShell(command, cwd) {
   const location = escapePowerShellString(cwd || rootDir)
   const script = `Set-Location -LiteralPath '${location}'; ${command}`
-  const escapedScript = script.replaceAll('"', '\\"')
-  const startCommand = `start "${escapeCmdTitle(title)}" powershell.exe -NoExit -ExecutionPolicy Bypass -Command "${escapedScript}"`
 
-  return spawn('cmd.exe', ['/d', '/s', '/c', startCommand], {
+  return spawn('cmd.exe', ['/d', '/c', 'start', '', 'powershell.exe', '-NoExit', '-ExecutionPolicy', 'Bypass', '-Command', script], {
     cwd: rootDir,
     detached: true,
     shell: false,
@@ -80,7 +74,7 @@ async function runTool(tool) {
   if (!tool.command) throw new Error('这个工具没有配置启动命令')
   if (tool.cwd) await stat(tool.cwd)
 
-  const child = runVisiblePowerShell(tool.command, tool.cwd || rootDir, tool.name || tool.id)
+  const child = runVisiblePowerShell(tool.command, tool.cwd || rootDir)
   child.unref()
   setStatus(tool.id, {
     state: 'running',
