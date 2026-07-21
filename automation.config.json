@@ -1,0 +1,61 @@
+{
+  "tools": [
+    {
+      "id": "badcase-detect-agent",
+      "name": "Badcase Detect Agent",
+      "description": "Streamlit badcase 检查与 prompt 修复工作台。",
+      "category": "评估诊断",
+      "cwd": "C:\\Users\\ZLSHLT2604010\\Desktop\\badcase_detect_agent",
+      "command": ".\\.venv312\\Scripts\\streamlit.exe run app.py",
+      "url": "http://localhost:8501",
+      "openDelayMs": 4000,
+      "favorite": true,
+      "icon": "bot"
+    },
+    {
+      "id": "data-viewer",
+      "name": "Data Viewer",
+      "description": "查看、筛选和分析评估数据及 benchmark 页面。",
+      "category": "数据查看",
+      "cwd": "C:\\Users\\ZLSHLT2604010\\Desktop\\data_viewer",
+      "command": "Start-Process \".\\benchmark_viewer_v3.html\"",
+      "url": "",
+      "favorite": true,
+      "icon": "database"
+    },
+    {
+      "id": "eval-llm-wiki",
+      "name": "Eval LLM Wiki",
+      "description": "面向 LLM 评测复盘的长期 Markdown 知识库。",
+      "category": "知识沉淀",
+      "cwd": "C:\\Users\\ZLSHLT2604010\\Desktop\\eval_LLM_WiKi",
+      "command": "explorer .",
+      "url": "",
+      "favorite": true,
+      "icon": "code"
+    },
+    {
+      "id": "eval-sop-skill",
+      "name": "Eval SOP Skill",
+      "description": "评估标注 SOP skill 本地目录，便于维护和查阅。",
+      "category": "SOP 助手",
+      "cwd": "C:\\Users\\ZLSHLT2604010\\Desktop\\eval_sop_ai\\eval-annotation-sop",
+      "command": "explorer .",
+      "url": "",
+      "favorite": false,
+      "icon": "wrench"
+    },
+    {
+      "id": "codex-usage-dashboard",
+      "name": "Codex Usage Dashboard",
+      "description": "Codex 使用量追踪 dashboard 开发入口。",
+      "category": "效率工具",
+      "cwd": "C:\\Users\\ZLSHLT2604010\\Desktop\\codex_usage_tracker\\codex-usage-tracker",
+      "command": "npm.cmd run dashboard:dev",
+      "url": "http://localhost:5173",
+      "openDelayMs": 3500,
+      "favorite": false,
+      "icon": "gauge"
+    }
+  ]
+}
