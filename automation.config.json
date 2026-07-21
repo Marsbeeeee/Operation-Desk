@@ -49,7 +49,7 @@
       "cwd": "C:\\Users\\ZLSHLT2604010\\Desktop\\eval_sop_ai\\eval-annotation-sop",
       "command": "explorer .",
       "url": "",
-      "repoUrl": "",
+      "repoUrl": "https://github.com/Marsbeeeee/leap-sop-agent-skill",
       "skillName": "eval-annotation-sop",
       "skillPrompt": "$eval-annotation-sop 查询评估标注 SOP，并说明应该如何标注 / 质检 / 提交",
       "required": true,

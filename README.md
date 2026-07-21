@@ -1,38 +1,36 @@
 # 自动化操作台
 
-这是一个本地自动化入口汇总台，用来把散落在桌面上的脚本、页面、Streamlit 应用和项目目录集中到一个可搜索、可启动、可打开目录的工作台里。
+团队自动化入口页，用来把评估诊断、数据查看、知识库、SOP Skill 和 Codex 使用量追踪集中到一个可搜索、可复制、可跳转的操作台里。
 
-团队成员优先使用 GitHub Pages 上的静态入口页；本机启动器只用于需要在个人电脑上直接运行命令的场景。
-
-## 当前功能
-
-- 集中展示本地自动化入口
-- 按分类查看工具
-- 搜索工具名称、描述、目录和启动命令
-- 一键启动已配置的本地命令
-- 一键打开工具对应的工作目录
-- Skill 类入口可一键复制 Codex 调用指令
-- 对 Web 服务入口，点击“访问”会先启动服务并等待 URL 可访问，再打开浏览器
-- 本机服务不可用时，自动退化为 GitHub 仓库入口或复制启动命令
-- 展示本次会话内的启动状态和最近启动时间
-- 通过 `automation.config.json` 维护工具清单
+团队成员优先使用 GitHub Pages 静态页面；本机启动器只用于个人电脑上需要直接运行本地命令的场景。
 
 ## 核心入口
+
+这 5 个入口缺一不可，都会在 `automation.config.json` 中标记为 `required: true`。
 
 - **Badcase Detect Agent**：通过 Codex Skill 做 prompt compliance badcase 分析与修复实验
 - **Data Viewer**：评估数据与 benchmark 查看入口
 - **Eval LLM Wiki**：LLM 评测复盘 Markdown 知识库
-- **Eval SOP Skill**：评估标注 SOP skill 本地目录
+- **Eval SOP Skill**：评估标注 SOP Skill 入口
 - **Codex Usage Dashboard**：Codex 使用量追踪 dashboard 开发入口
 
-这 5 个入口是操作台的核心入口，缺一不可。它们在 `automation.config.json` 中会标记为 `required: true`。
+## 团队仓库
 
-## 启动方式
+- [Marsbeeeee/badcase_detect_agent](https://github.com/Marsbeeeee/badcase_detect_agent)
+- [Marsbeeeee/leap-sop-agent-skill](https://github.com/Marsbeeeee/leap-sop-agent-skill)
+- [Marsbeeeee/Data-Viewer](https://github.com/Marsbeeeee/Data-Viewer)
+- [Marsbeeeee/eval_LLM_WiKi](https://github.com/Marsbeeeee/eval_LLM_WiKi)
+- [douglasmonsky/codex-usage-tracker](https://github.com/douglasmonsky/codex-usage-tracker)
 
-操作台有两种模式：
+## 功能
 
-- **团队浏览模式**：通过 GitHub Pages 访问，不依赖任何人的本机服务，可打开 GitHub 仓库、复制 Skill 指令或复制启动命令。
-- **个人本机模式**：在自己的电脑上运行 `start-desk.cmd`，可以点击“启动”真实运行本地命令。
+- 集中展示 5 个团队核心自动化入口
+- 按分类查看和搜索工具
+- Skill 类入口可复制 Codex 调用指令
+- 仓库类入口可跳转到 GitHub
+- 本机服务不可用时，自动退化为团队浏览模式
+- 个人本机模式下，可启动本地命令、打开工作目录、访问本地 Web 服务
+- 启动前校验核心入口是否完整
 
 ## 团队共享
 
@@ -50,19 +48,17 @@ Pages 地址通常是：
 https://marsbeeeee.github.io/Operation-Desk/
 ```
 
-如果 Pages 还没有打开，需要在 GitHub 仓库的 **Settings -> Pages** 中选择 **GitHub Actions** 作为发布来源。
+如果 Pages 还没有打开，需要在 GitHub 仓库的 `Settings -> Pages` 中选择 `GitHub Actions` 作为发布来源。
 
 ## 本机启动
 
-推荐直接双击：
+在个人电脑上需要直接运行本地命令时，双击：
 
 ```text
 start-desk.cmd
 ```
 
-它会构建前端、启动本机操作台服务，并自动打开浏览器。
-
-在当前目录执行：
+或者在当前目录执行：
 
 ```powershell
 npm.cmd run desk
@@ -74,45 +70,37 @@ npm.cmd run desk
 http://127.0.0.1:4317
 ```
 
-请通过 `http://127.0.0.1:4317` 使用操作台。只有这个地址会连接本机启动器，才能点击“启动”和“目录”执行真实操作。
+注意：只有 `http://127.0.0.1:4317` 会连接本机启动器。GitHub Pages 版本不会执行本机命令，只会打开仓库、复制 Skill 指令或复制启动命令。
 
-如果只打开静态页面，或者部署到 GitHub Pages，页面仍然可用，但会进入团队浏览模式：能打开已配置的 GitHub 仓库，或者复制启动命令到本机终端执行。
+## 开发命令
 
-Web 服务类入口建议直接点“访问”。操作台会自动发起启动，等待服务地址可访问后再打开浏览器；如果等待超时，请看弹出的 PowerShell 窗口里的报错。
-
-Skill 类入口建议点“复制 Skill”，然后把复制出的调用指令粘到 Codex 对话里继续使用。
-
-## 常用开发命令
-
-只启动前端开发服务：
-
-```powershell
-npm.cmd run dev
-```
-
-这个模式只适合改界面；它不会启动本机命令执行 API。
-
-构建前端产物：
-
-```powershell
-npm.cmd run build
-```
-
-校验核心入口配置：
+校验核心入口：
 
 ```powershell
 npm.cmd run check:tools
 ```
 
-只启动本地操作台服务：
+本地开发前端：
+
+```powershell
+npm.cmd run dev
+```
+
+构建静态页面：
+
+```powershell
+npm.cmd run build
+```
+
+只启动本机操作台服务：
 
 ```powershell
 npm.cmd run start
 ```
 
-## 新增或修改工具
+## 配置入口
 
-编辑 `automation.config.json`，在 `tools` 数组里新增一项即可：
+入口统一维护在 `automation.config.json`：
 
 ```json
 {
@@ -126,28 +114,24 @@ npm.cmd run start
   "repoUrl": "https://github.com/Marsbeeeee/my-tool",
   "skillName": "my-skill",
   "skillPrompt": "$my-skill 处理这个任务",
+  "required": true,
   "favorite": true,
   "icon": "terminal"
 }
 ```
 
-字段说明：
+常用字段：
 
-- `id`：工具唯一标识，建议使用英文小写和连字符
-- `name`：操作台展示名称
-- `description`：工具说明
-- `category`：工具分类
-- `cwd`：命令执行目录，也是“目录”按钮打开的位置
-- `command`：点击“启动”时执行的 PowerShell 命令
-- `url`：可选，配置后会显示“访问”按钮
-- `repoUrl`：可选，本机服务不可用时打开的 GitHub 仓库地址
-- `skillName`：可选，Codex Skill 名称；配置后主按钮会变成“复制 Skill”
-- `skillPrompt`：可选，复制到剪贴板的默认 Skill 调用指令
-- `favorite`：是否显示在常用启动区
-- `icon`：图标类型，可用值包括 `bot`、`database`、`code`、`file`、`gauge`、`terminal`、`wrench`、`activity`
-
-## 注意事项
-
-- Windows PowerShell 可能会限制 `npm.ps1`，所以配置里建议写 `npm.cmd`。
-- 本操作台只监听本机地址 `127.0.0.1`。
-- “启动状态”只记录当前操作台服务运行期间的信息，重启后会清空。
+- `id`：工具唯一标识
+- `name`：展示名称
+- `description`：用途说明
+- `category`：分类
+- `repoUrl`：团队版优先打开的 GitHub 仓库
+- `skillName`：Codex Skill 名称；配置后主按钮会变成“复制 Skill”
+- `skillPrompt`：复制到剪贴板的默认 Skill 调用指令
+- `cwd`：个人本机模式下的工作目录
+- `command`：个人本机模式下执行的命令
+- `url`：个人本机模式下访问的本地 Web 服务地址
+- `required`：是否核心入口
+- `favorite`：是否显示在常用区
+- `icon`：图标类型
