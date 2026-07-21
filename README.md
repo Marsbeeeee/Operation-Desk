@@ -9,6 +9,7 @@
 - 搜索工具名称、描述、目录和启动命令
 - 一键启动已配置的本地命令
 - 一键打开工具对应的工作目录
+- 本机服务不可用时，自动退化为 GitHub 仓库入口或复制启动命令
 - 展示本次会话内的启动状态和最近启动时间
 - 通过 `automation.config.json` 维护工具清单
 
@@ -21,6 +22,11 @@
 - **Codex Usage Dashboard**：Codex 使用量追踪 dashboard 开发入口
 
 ## 启动方式
+
+操作台有两种模式：
+
+- **本机模式**：可以点击“启动”真实运行本地命令。
+- **浏览模式**：没有本机启动器时，只能打开 GitHub、访问已启动页面或复制命令。
 
 推荐直接双击：
 
@@ -43,6 +49,8 @@ http://127.0.0.1:4317
 ```
 
 请通过 `http://127.0.0.1:4317` 使用操作台。只有这个地址会连接本机启动器，才能点击“启动”和“目录”执行真实操作。
+
+如果只打开静态页面，或者以后部署到 GitHub Pages，页面仍然可用，但会进入浏览模式：能打开已配置的 GitHub 仓库，或者复制启动命令到本机终端执行。
 
 ## 常用开发命令
 
@@ -79,6 +87,7 @@ npm.cmd run start
   "cwd": "C:\\Users\\ZLSHLT2604010\\Desktop\\my-tool",
   "command": "npm.cmd run dev",
   "url": "http://localhost:5173",
+  "repoUrl": "https://github.com/Marsbeeeee/my-tool",
   "favorite": true,
   "icon": "terminal"
 }
@@ -93,6 +102,7 @@ npm.cmd run start
 - `cwd`：命令执行目录，也是“目录”按钮打开的位置
 - `command`：点击“启动”时执行的 PowerShell 命令
 - `url`：可选，配置后会显示“访问”按钮
+- `repoUrl`：可选，本机服务不可用时打开的 GitHub 仓库地址
 - `favorite`：是否显示在常用启动区
 - `icon`：图标类型，可用值包括 `bot`、`database`、`code`、`file`、`gauge`、`terminal`、`wrench`、`activity`
 

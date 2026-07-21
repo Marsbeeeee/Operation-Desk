@@ -8,6 +8,7 @@
       "cwd": "C:\\Users\\ZLSHLT2604010\\Desktop\\badcase_detect_agent",
       "command": ".\\.venv312\\Scripts\\streamlit.exe run app.py",
       "url": "http://localhost:8501",
+      "repoUrl": "https://github.com/Marsbeeeee/badcase_detect_agent",
       "openDelayMs": 4000,
       "favorite": true,
       "icon": "bot"
@@ -20,6 +21,7 @@
       "cwd": "C:\\Users\\ZLSHLT2604010\\Desktop\\data_viewer",
       "command": "Start-Process \".\\benchmark_viewer_v3.html\"",
       "url": "",
+      "repoUrl": "",
       "favorite": true,
       "icon": "database"
     },
@@ -31,6 +33,7 @@
       "cwd": "C:\\Users\\ZLSHLT2604010\\Desktop\\eval_LLM_WiKi",
       "command": "explorer .",
       "url": "",
+      "repoUrl": "https://github.com/Marsbeeeee/eval_LLM_WiKi",
       "favorite": true,
       "icon": "code"
     },
@@ -42,6 +45,7 @@
       "cwd": "C:\\Users\\ZLSHLT2604010\\Desktop\\eval_sop_ai\\eval-annotation-sop",
       "command": "explorer .",
       "url": "",
+      "repoUrl": "",
       "favorite": false,
       "icon": "wrench"
     },
@@ -53,6 +57,7 @@
       "cwd": "C:\\Users\\ZLSHLT2604010\\Desktop\\codex_usage_tracker\\codex-usage-tracker",
       "command": "npm.cmd run dashboard:dev",
       "url": "http://localhost:5173",
+      "repoUrl": "",
       "openDelayMs": 3500,
       "favorite": false,
       "icon": "gauge"

@@ -7,6 +7,7 @@ import {
   CheckCircle2,
   Clock3,
   Code2,
+  Copy,
   Database,
   FileCode2,
   FolderOpen,
@@ -35,6 +36,7 @@ const fallbackTools = [
     cwd: 'C:\\Users\\ZLSHLT2604010\\Desktop\\badcase_detect_agent',
     command: '.\\.venv312\\Scripts\\streamlit.exe run app.py',
     url: 'http://localhost:8501',
+    repoUrl: 'https://github.com/Marsbeeeee/badcase_detect_agent',
     favorite: true,
     icon: 'bot',
   },
@@ -57,6 +59,7 @@ const fallbackTools = [
     cwd: 'C:\\Users\\ZLSHLT2604010\\Desktop\\eval_LLM_WiKi',
     command: 'explorer .',
     url: '',
+    repoUrl: 'https://github.com/Marsbeeeee/eval_LLM_WiKi',
     favorite: true,
     icon: 'code',
   },
@@ -165,7 +168,15 @@ function App() {
 
   const launchTool = async tool => {
     if (!apiReady) {
-      showToast('请用 npm run desk 启动操作台后端，才能直接执行命令')
+      if (tool.repoUrl) {
+        window.open(tool.repoUrl, '_blank', 'noopener,noreferrer')
+        showToast('已打开 GitHub 仓库；本机运行需要启动本机服务')
+      } else if (tool.command) {
+        await navigator.clipboard?.writeText(tool.command)
+        showToast('本机服务未连接，已复制启动命令')
+      } else {
+        showToast('这个入口没有配置 GitHub 地址或启动命令')
+      }
       return
     }
     setLaunching(tool.id)
@@ -189,7 +200,12 @@ function App() {
 
   const openFolder = async tool => {
     if (!apiReady) {
-      showToast(tool.cwd || '没有配置目录')
+      if (tool.repoUrl) {
+        window.open(tool.repoUrl, '_blank', 'noopener,noreferrer')
+        showToast('本机服务未连接，已改为打开 GitHub')
+      } else {
+        showToast(tool.cwd || '没有配置目录')
+      }
       return
     }
     try {
@@ -198,6 +214,15 @@ function App() {
     } catch (error) {
       showToast(error.message)
     }
+  }
+
+  const copyCommand = async tool => {
+    if (!tool.command) {
+      showToast('这个入口没有配置启动命令')
+      return
+    }
+    await navigator.clipboard?.writeText(tool.command)
+    showToast('启动命令已复制')
   }
 
   return (
@@ -228,7 +253,7 @@ function App() {
           <span className={apiReady ? 'api-dot ready' : 'api-dot'} />
           <div>
             <strong>{apiReady ? '本机启动器在线' : '仅浏览模式'}</strong>
-            <p>{apiReady ? '可直接运行配置命令' : '运行 npm run desk 启用执行按钮'}</p>
+            <p>{apiReady ? '可直接运行配置命令' : '可打开 GitHub 或复制命令'}</p>
           </div>
         </div>
       </aside>
@@ -317,10 +342,16 @@ function App() {
                   </dl>
                   {status.message && <div className="message-line">{status.message}</div>}
                   <div className="card-actions">
-                    <button className="primary" disabled={launching === tool.id || !tool.command} onClick={() => launchTool(tool)}>
-                      {launching === tool.id ? <Loader2 className="spin" size={17} /> : <Play size={17} />}
-                      启动
+                    <button className="primary" disabled={launching === tool.id || (!tool.command && !tool.repoUrl)} onClick={() => launchTool(tool)}>
+                      {launching === tool.id ? <Loader2 className="spin" size={17} /> : apiReady ? <Play size={17} /> : <ArrowUpRight size={17} />}
+                      {apiReady ? '启动' : tool.repoUrl ? 'GitHub' : '复制命令'}
                     </button>
+                    {!apiReady && tool.command && (
+                      <button className="secondary" onClick={() => copyCommand(tool)}>
+                        <Copy size={16} />
+                        命令
+                      </button>
+                    )}
                     {tool.url && (
                       <a className="secondary" href={tool.url} target="_blank" rel="noreferrer">
                         <ArrowUpRight size={16} />
@@ -329,7 +360,7 @@ function App() {
                     )}
                     <button className="secondary" onClick={() => openFolder(tool)}>
                       <FolderOpen size={16} />
-                      目录
+                      {apiReady ? '目录' : tool.repoUrl ? '仓库' : '目录'}
                     </button>
                   </div>
                 </article>
