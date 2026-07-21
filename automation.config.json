@@ -23,7 +23,7 @@
       "cwd": "C:\\Users\\ZLSHLT2604010\\Desktop\\data_viewer",
       "command": "Start-Process \".\\benchmark_viewer_v3.html\"",
       "url": "",
-      "repoUrl": "",
+      "repoUrl": "https://github.com/Marsbeeeee/Data-Viewer",
       "required": true,
       "favorite": true,
       "icon": "database"
@@ -64,7 +64,7 @@
       "cwd": "C:\\Users\\ZLSHLT2604010\\Desktop\\codex_usage_tracker\\codex-usage-tracker",
       "command": "npm.cmd run dashboard:dev",
       "url": "http://localhost:5173",
-      "repoUrl": "",
+      "repoUrl": "https://github.com/douglasmonsky/codex-usage-tracker",
       "openDelayMs": 3500,
       "visitTimeoutMs": 30000,
       "required": true,

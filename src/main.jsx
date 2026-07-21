@@ -26,44 +26,9 @@ import {
   XCircle,
 } from 'lucide-react'
 import './styles.css'
+import automationConfig from '../automation.config.json'
 
-const fallbackTools = [
-  {
-    id: 'badcase-detect-agent',
-    name: 'Badcase Detect Agent',
-    description: 'Streamlit badcase 检查与 prompt 修复工作台。',
-    category: '评估诊断',
-    cwd: 'C:\\Users\\ZLSHLT2604010\\Desktop\\badcase_detect_agent',
-    command: '.\\.venv312\\Scripts\\streamlit.exe run app.py',
-    url: 'http://localhost:8501',
-    repoUrl: 'https://github.com/Marsbeeeee/badcase_detect_agent',
-    favorite: true,
-    icon: 'bot',
-  },
-  {
-    id: 'data-viewer',
-    name: 'Data Viewer',
-    description: '查看、筛选和分析评估数据及 benchmark 页面。',
-    category: '数据查看',
-    cwd: 'C:\\Users\\ZLSHLT2604010\\Desktop\\data_viewer',
-    command: 'Start-Process ".\\benchmark_viewer_v3.html"',
-    url: '',
-    favorite: true,
-    icon: 'database',
-  },
-  {
-    id: 'eval-llm-wiki',
-    name: 'Eval LLM Wiki',
-    description: '面向 LLM 评测复盘的长期 Markdown 知识库。',
-    category: '知识沉淀',
-    cwd: 'C:\\Users\\ZLSHLT2604010\\Desktop\\eval_LLM_WiKi',
-    command: 'explorer .',
-    url: '',
-    repoUrl: 'https://github.com/Marsbeeeee/eval_LLM_WiKi',
-    favorite: true,
-    icon: 'code',
-  },
-]
+const fallbackTools = automationConfig.tools || []
 
 const iconMap = {
   activity: Activity,

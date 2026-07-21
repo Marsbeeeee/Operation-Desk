@@ -20,11 +20,14 @@ const missingRequiredMarker = tools
 const missingSkillName = tools
   .filter(tool => ['badcase-detect-agent', 'eval-sop-skill'].includes(tool.id) && !tool.skillName)
   .map(tool => tool.id)
+const missingTeamTarget = tools
+  .filter(tool => requiredToolIds.includes(tool.id) && !tool.skillName && !tool.repoUrl && !tool.url)
+  .map(tool => tool.id)
 const duplicateIds = tools
   .map(tool => tool.id)
   .filter((id, index, allIds) => allIds.indexOf(id) !== index)
 
-if (missing.length > 0 || missingRequiredMarker.length > 0 || missingSkillName.length > 0 || duplicateIds.length > 0) {
+if (missing.length > 0 || missingRequiredMarker.length > 0 || missingSkillName.length > 0 || missingTeamTarget.length > 0 || duplicateIds.length > 0) {
   if (missing.length > 0) {
     console.error(`Missing required tools: ${missing.join(', ')}`)
   }
@@ -33,6 +36,9 @@ if (missing.length > 0 || missingRequiredMarker.length > 0 || missingSkillName.l
   }
   if (missingSkillName.length > 0) {
     console.error(`Skill tools without skillName: ${missingSkillName.join(', ')}`)
+  }
+  if (missingTeamTarget.length > 0) {
+    console.error(`Team-visible tools without repoUrl/url: ${missingTeamTarget.join(', ')}`)
   }
   if (duplicateIds.length > 0) {
     console.error(`Duplicate tool ids: ${[...new Set(duplicateIds)].join(', ')}`)
