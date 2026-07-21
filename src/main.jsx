@@ -321,6 +321,7 @@ function App() {
                     <ToolIcon tool={tool} />
                     <div className="card-flags">
                       {tool.favorite && <Star size={16} fill="currentColor" />}
+                      {tool.required && <span className="core-badge">核心</span>}
                       <StatusPill status={status} />
                     </div>
                   </div>

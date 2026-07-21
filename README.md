@@ -13,13 +13,15 @@
 - 展示本次会话内的启动状态和最近启动时间
 - 通过 `automation.config.json` 维护工具清单
 
-## 当前包含的入口
+## 核心入口
 
 - **Badcase Detect Agent**：Streamlit badcase 检查与 prompt 修复工作台
 - **Data Viewer**：评估数据与 benchmark 查看入口
 - **Eval LLM Wiki**：LLM 评测复盘 Markdown 知识库
 - **Eval SOP Skill**：评估标注 SOP skill 本地目录
 - **Codex Usage Dashboard**：Codex 使用量追踪 dashboard 开发入口
+
+这 5 个入口是操作台的核心入口，缺一不可。它们在 `automation.config.json` 中会标记为 `required: true`。
 
 ## 启动方式
 
@@ -66,6 +68,12 @@ npm.cmd run dev
 
 ```powershell
 npm.cmd run build
+```
+
+校验核心入口配置：
+
+```powershell
+npm.cmd run check:tools
 ```
 
 只启动本地操作台服务：

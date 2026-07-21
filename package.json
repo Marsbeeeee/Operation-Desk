@@ -5,10 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "check:tools": "node scripts/validate-tools.mjs",
     "build": "vite build",
     "preview": "vite preview",
     "start": "node server.mjs",
-    "desk": "npm.cmd run build && node server.mjs"
+    "desk": "npm.cmd run check:tools && npm.cmd run build && node server.mjs"
   },
   "dependencies": {
     "@vitejs/plugin-react": "latest",

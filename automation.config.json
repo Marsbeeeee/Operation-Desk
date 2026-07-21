@@ -10,6 +10,7 @@
       "url": "http://localhost:8501",
       "repoUrl": "https://github.com/Marsbeeeee/badcase_detect_agent",
       "openDelayMs": 4000,
+      "required": true,
       "favorite": true,
       "icon": "bot"
     },
@@ -22,6 +23,7 @@
       "command": "Start-Process \".\\benchmark_viewer_v3.html\"",
       "url": "",
       "repoUrl": "",
+      "required": true,
       "favorite": true,
       "icon": "database"
     },
@@ -34,6 +36,7 @@
       "command": "explorer .",
       "url": "",
       "repoUrl": "https://github.com/Marsbeeeee/eval_LLM_WiKi",
+      "required": true,
       "favorite": true,
       "icon": "code"
     },
@@ -46,6 +49,7 @@
       "command": "explorer .",
       "url": "",
       "repoUrl": "",
+      "required": true,
       "favorite": false,
       "icon": "wrench"
     },
@@ -59,6 +63,7 @@
       "url": "http://localhost:5173",
       "repoUrl": "",
       "openDelayMs": 3500,
+      "required": true,
       "favorite": false,
       "icon": "gauge"
     }
