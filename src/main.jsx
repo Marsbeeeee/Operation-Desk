@@ -221,9 +221,22 @@ function App() {
     showToast(`已复制 ${tool.skillName} 调用指令`)
   }
 
+  const copyActionText = async tool => {
+    if (!tool.actionText) {
+      showToast('这个入口没有配置操作模板')
+      return
+    }
+    await navigator.clipboard?.writeText(tool.actionText)
+    showToast(`已复制 ${tool.actionLabel || '操作模板'}`)
+  }
+
   const handlePrimaryAction = tool => {
     if (tool.skillName) {
       copySkillPrompt(tool)
+      return
+    }
+    if (tool.actionText) {
+      copyActionText(tool)
       return
     }
     launchTool(tool)
@@ -303,7 +316,7 @@ function App() {
                 <button key={tool.id} onClick={() => handlePrimaryAction(tool)}>
                   <ToolIcon tool={tool} />
                   <span>{tool.name}</span>
-                  {tool.skillName ? <Copy size={15} /> : <Play size={15} />}
+                  {tool.skillName || tool.actionText ? <Copy size={15} /> : <Play size={15} />}
                 </button>
               ))}
             </div>
@@ -346,6 +359,12 @@ function App() {
                         <dd>${tool.skillName}</dd>
                       </div>
                     )}
+                    {tool.actionText && (
+                      <div>
+                        <dt>操作</dt>
+                        <dd>{tool.actionLabel || '复制操作模板'}</dd>
+                      </div>
+                    )}
                     <div>
                       <dt>最近</dt>
                       <dd>{timeLabel(status.lastRunAt)}</dd>
@@ -353,9 +372,9 @@ function App() {
                   </dl>
                   {status.message && <div className="message-line">{status.message}</div>}
                   <div className="card-actions">
-                    <button className="primary" disabled={launching === tool.id || (!tool.skillName && !tool.command && !tool.repoUrl)} onClick={() => handlePrimaryAction(tool)}>
-                      {launching === tool.id ? <Loader2 className="spin" size={17} /> : tool.skillName ? <Copy size={17} /> : apiReady ? <Play size={17} /> : <ArrowUpRight size={17} />}
-                      {tool.skillName ? '复制 Skill' : apiReady ? '启动' : tool.repoUrl ? 'GitHub' : '复制命令'}
+                    <button className="primary" disabled={launching === tool.id || (!tool.skillName && !tool.actionText && !tool.command && !tool.repoUrl)} onClick={() => handlePrimaryAction(tool)}>
+                      {launching === tool.id ? <Loader2 className="spin" size={17} /> : tool.skillName || tool.actionText ? <Copy size={17} /> : apiReady ? <Play size={17} /> : <ArrowUpRight size={17} />}
+                      {tool.skillName ? '复制 Skill' : tool.actionText ? tool.actionLabel || '复制操作' : apiReady ? '启动' : tool.repoUrl ? 'GitHub' : '复制命令'}
                     </button>
                     {!apiReady && tool.command && (
                       <button className="secondary" onClick={() => copyCommand(tool)}>

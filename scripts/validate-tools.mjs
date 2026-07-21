@@ -23,11 +23,14 @@ const missingSkillName = tools
 const missingTeamTarget = tools
   .filter(tool => requiredToolIds.includes(tool.id) && !tool.skillName && !tool.repoUrl && !tool.url)
   .map(tool => tool.id)
+const missingActionText = tools
+  .filter(tool => ['eval-llm-wiki'].includes(tool.id) && !tool.actionText)
+  .map(tool => tool.id)
 const duplicateIds = tools
   .map(tool => tool.id)
   .filter((id, index, allIds) => allIds.indexOf(id) !== index)
 
-if (missing.length > 0 || missingRequiredMarker.length > 0 || missingSkillName.length > 0 || missingTeamTarget.length > 0 || duplicateIds.length > 0) {
+if (missing.length > 0 || missingRequiredMarker.length > 0 || missingSkillName.length > 0 || missingTeamTarget.length > 0 || missingActionText.length > 0 || duplicateIds.length > 0) {
   if (missing.length > 0) {
     console.error(`Missing required tools: ${missing.join(', ')}`)
   }
@@ -39,6 +42,9 @@ if (missing.length > 0 || missingRequiredMarker.length > 0 || missingSkillName.l
   }
   if (missingTeamTarget.length > 0) {
     console.error(`Team-visible tools without repoUrl/url: ${missingTeamTarget.join(', ')}`)
+  }
+  if (missingActionText.length > 0) {
+    console.error(`Action tools without actionText: ${missingActionText.join(', ')}`)
   }
   if (duplicateIds.length > 0) {
     console.error(`Duplicate tool ids: ${[...new Set(duplicateIds)].join(', ')}`)

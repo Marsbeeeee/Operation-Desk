@@ -10,7 +10,7 @@
 
 - **Badcase Detect Agent**：通过 Codex Skill 做 prompt compliance badcase 分析与修复实验
 - **Data Viewer**：评估数据与 benchmark 查看入口
-- **Eval LLM Wiki**：LLM 评测复盘 Markdown 知识库
+- **Eval LLM Wiki**：LLM 评测复盘 Markdown 知识库，可复制 ingest / query / lint 任务模板
 - **Eval SOP Skill**：评估标注 SOP Skill 入口
 - **Codex Usage Dashboard**：Codex 使用量追踪 dashboard 开发入口
 
@@ -27,6 +27,7 @@
 - 集中展示 5 个团队核心自动化入口
 - 按分类查看和搜索工具
 - Skill 类入口可复制 Codex 调用指令
+- Wiki 类入口可复制 Codex 维护任务模板
 - 仓库类入口可跳转到 GitHub
 - 本机服务不可用时，自动退化为团队浏览模式
 - 个人本机模式下，可启动本地命令、打开工作目录、访问本地 Web 服务
@@ -129,6 +130,8 @@ npm.cmd run start
 - `repoUrl`：团队版优先打开的 GitHub 仓库
 - `skillName`：Codex Skill 名称；配置后主按钮会变成“复制 Skill”
 - `skillPrompt`：复制到剪贴板的默认 Skill 调用指令
+- `actionLabel`：自定义主按钮文案
+- `actionText`：复制到剪贴板的操作模板
 - `cwd`：个人本机模式下的工作目录
 - `command`：个人本机模式下执行的命令
 - `url`：个人本机模式下访问的本地 Web 服务地址

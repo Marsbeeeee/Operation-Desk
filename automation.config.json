@@ -37,6 +37,8 @@
       "command": "explorer .",
       "url": "",
       "repoUrl": "https://github.com/Marsbeeeee/eval_LLM_WiKi",
+      "actionLabel": "复制 Wiki 任务",
+      "actionText": "请按 eval_LLM_WiKi 维护规范处理以下任务：\nTask: ingest / query / lint\nSource:\n- `raw/...`\n\n要求：\n- 先读取 `wiki/index.md`\n- 新增或更新相关 wiki 页面\n- 更新 `wiki/index.md` 和 `wiki/log.md`\n- 区分事实、推断和待确认内容",
       "required": true,
       "favorite": true,
       "icon": "code"
@@ -62,7 +64,7 @@
       "description": "Codex 使用量追踪 dashboard 开发入口。",
       "category": "效率工具",
       "cwd": "C:\\Users\\ZLSHLT2604010\\Desktop\\codex_usage_tracker\\codex-usage-tracker",
-      "command": "npm.cmd run dashboard:dev",
+      "command": "npm.cmd install && npm.cmd run dashboard:dev",
       "url": "http://localhost:5173",
       "repoUrl": "https://github.com/douglasmonsky/codex-usage-tracker",
       "openDelayMs": 3500,
