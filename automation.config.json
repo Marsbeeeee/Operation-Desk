@@ -10,6 +10,7 @@
       "url": "http://localhost:8501",
       "repoUrl": "https://github.com/Marsbeeeee/badcase_detect_agent",
       "openDelayMs": 4000,
+      "visitTimeoutMs": 45000,
       "required": true,
       "favorite": true,
       "icon": "bot"
@@ -63,6 +64,7 @@
       "url": "http://localhost:5173",
       "repoUrl": "",
       "openDelayMs": 3500,
+      "visitTimeoutMs": 30000,
       "required": true,
       "favorite": false,
       "icon": "gauge"

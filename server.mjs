@@ -49,6 +49,10 @@ function publicStatuses() {
   return Object.fromEntries(statuses.entries())
 }
 
+function sleep(ms) {
+  return new Promise(resolveSleep => setTimeout(resolveSleep, ms))
+}
+
 function escapePowerShellString(value) {
   return String(value).replaceAll("'", "''")
 }
@@ -86,6 +90,55 @@ async function runTool(tool) {
   })
 }
 
+function openUrl(url) {
+  const child = spawn('cmd.exe', ['/c', 'start', '', url], {
+    detached: true,
+    stdio: 'ignore',
+    windowsHide: true,
+  })
+  child.unref()
+}
+
+async function isUrlReady(url) {
+  try {
+    const response = await fetch(url, {
+      method: 'GET',
+      signal: AbortSignal.timeout(1200),
+    })
+    return response.status < 500
+  } catch {
+    return false
+  }
+}
+
+async function waitForUrl(url, timeoutMs) {
+  const deadline = Date.now() + timeoutMs
+  while (Date.now() < deadline) {
+    if (await isUrlReady(url)) return true
+    await sleep(900)
+  }
+  return false
+}
+
+async function visitTool(tool) {
+  if (!tool.url) throw new Error('这个工具没有配置访问地址')
+  const timeoutMs = tool.visitTimeoutMs || 20000
+
+  if (!await isUrlReady(tool.url)) {
+    if (!tool.command) throw new Error('服务未运行，而且这个工具没有配置启动命令')
+    await runTool(tool)
+  }
+
+  setStatus(tool.id, { state: 'launching', message: 'Waiting for service URL...' })
+  const ready = await waitForUrl(tool.url, timeoutMs)
+  if (!ready) {
+    throw new Error(`服务还没就绪：${tool.url}。请查看弹出的 PowerShell 窗口里的报错。`)
+  }
+
+  openUrl(tool.url)
+  setStatus(tool.id, { state: 'running', message: '' })
+}
+
 async function openFolder(tool) {
   if (!tool.cwd) throw new Error('这个工具没有配置工作目录')
   await stat(tool.cwd)
@@ -119,6 +172,24 @@ async function handleApi(request, response, url) {
     try {
       setStatus(tool.id, { state: 'launching', message: '' })
       await runTool(tool)
+      sendJson(response, 200, { ok: true, statuses: publicStatuses() })
+    } catch (error) {
+      setStatus(tool.id, { state: 'failed', message: error.message })
+      sendJson(response, 500, { error: error.message, statuses: publicStatuses() })
+    }
+    return true
+  }
+
+  const visitMatch = url.pathname.match(/^\/api\/tools\/([^/]+)\/visit$/)
+  if (request.method === 'POST' && visitMatch) {
+    const tool = tools.find(item => item.id === decodeURIComponent(visitMatch[1]))
+    if (!tool) {
+      sendJson(response, 404, { error: '没有找到这个工具' })
+      return true
+    }
+
+    try {
+      await visitTool(tool)
       sendJson(response, 200, { ok: true, statuses: publicStatuses() })
     } catch (error) {
       setStatus(tool.id, { state: 'failed', message: error.message })
@@ -182,11 +253,6 @@ createServer(async (request, response) => {
   const url = `http://127.0.0.1:${port}`
   console.log(`Operation Desk is running at ${url}`)
   if (process.env.OPERATION_DESK_OPEN === '1') {
-    const child = spawn('cmd.exe', ['/c', 'start', '', url], {
-      detached: true,
-      stdio: 'ignore',
-      windowsHide: true,
-    })
-    child.unref()
+    openUrl(url)
   }
 })

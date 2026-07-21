@@ -129,6 +129,7 @@ function App() {
   const [toast, setToast] = useState('')
   const [apiReady, setApiReady] = useState(false)
   const [launching, setLaunching] = useState('')
+  const [visiting, setVisiting] = useState('')
 
   const refreshTools = async () => {
     try {
@@ -185,11 +186,6 @@ function App() {
       const result = await api(`/api/tools/${tool.id}/run`, { method: 'POST' })
       setStatuses(result.statuses || {})
       showToast(`${tool.name} 已发起启动`)
-      if (tool.url) {
-        window.setTimeout(() => {
-          window.open(tool.url, '_blank', 'noopener,noreferrer')
-        }, tool.openDelayMs || 2500)
-      }
     } catch (error) {
       showToast(error.message)
       await refreshTools()
@@ -213,6 +209,31 @@ function App() {
       showToast('目录已打开')
     } catch (error) {
       showToast(error.message)
+    }
+  }
+
+  const visitTool = async tool => {
+    if (!tool.url) {
+      showToast('这个入口没有配置访问地址')
+      return
+    }
+    if (!apiReady) {
+      window.open(tool.url, '_blank', 'noopener,noreferrer')
+      showToast('本机启动器未连接，只能直接打开地址')
+      return
+    }
+
+    setVisiting(tool.id)
+    setStatuses(current => ({ ...current, [tool.id]: { state: 'launching', lastRunAt: new Date().toISOString(), message: 'Waiting for service URL...' } }))
+    try {
+      const result = await api(`/api/tools/${tool.id}/visit`, { method: 'POST' })
+      setStatuses(result.statuses || {})
+      showToast(`${tool.name} 已打开`)
+    } catch (error) {
+      showToast(error.message)
+      await refreshTools()
+    } finally {
+      setVisiting('')
     }
   }
 
@@ -354,10 +375,10 @@ function App() {
                       </button>
                     )}
                     {tool.url && (
-                      <a className="secondary" href={tool.url} target="_blank" rel="noreferrer">
-                        <ArrowUpRight size={16} />
+                      <button className="secondary" disabled={visiting === tool.id} onClick={() => visitTool(tool)}>
+                        {visiting === tool.id ? <Loader2 className="spin" size={16} /> : <ArrowUpRight size={16} />}
                         访问
-                      </a>
+                      </button>
                     )}
                     <button className="secondary" onClick={() => openFolder(tool)}>
                       <FolderOpen size={16} />
